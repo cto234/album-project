@@ -45,21 +45,30 @@ async function getAccessToken() {
 app.get("/albums", async (req, res) => {
   try {
     const token = await getAccessToken();
-    console.log("Token:", token);
-    console.log("Playlist ID:", playlistId);
+    const allTracks = [];
+    let offset = 0;
+    const limit = 100;
+    let hasNext = true;
 
-    const { data } = await axios.get(
-      `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+    while (hasNext) {
+      const { data } = await axios.get(
+        `https://api.spotify.com/v1/playlists/${playlistId}/tracks?offset=${offset}&limit=${limit}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      allTracks.push(...data.items);
+      if (data.next) {
+        offset += limit;
+      } else {
+        hasNext = false;
       }
-    );
-    console.log("Playlist data received:", data);
+    }
 
-    // map albums as before
-    const albums = data.items.map((item) => {
+    const albums = allTracks.map((item) => {
       const album = item.track.album;
       return {
         title: album.name,
