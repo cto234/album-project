@@ -31,6 +31,10 @@ const AlbumGrid = () => {
   const stripThe = (str) =>
     str.toLowerCase().startsWith("the ") ? str.slice(4) : str;
 
+  //I don't need albums to say (Remaster) or (Deluxe)
+  const stripParentheses = (str) => str.replace(/\s*\(.*?\)\s*/g, "").trim();
+
+
   //Sort albums
   const sortedAlbums = [...albums].sort((a, b) => {
     if (sortOption === "title") {
@@ -104,55 +108,61 @@ const AlbumGrid = () => {
 
           return (
             <a
-              key={`${album.title}-${index}`}
-              href={album.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="relative block group"
-            >
-              <img
-                src={album.image}
-                alt={album.title}
-                className="w-full rounded shadow-md transition duration-300 group-hover:brightness-50"
-              />
+  key={`${album.title}-${index}`}
+  href={album.link}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="block group"
+>
+  <div className="relative w-full">
+    {/* Album Image */}
+    <img
+      src={album.image}
+      alt={album.title}
+      className="w-full rounded shadow-md transition duration-300 group-hover:brightness-50"
+    />
 
-              {rating && (
-                <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                  <div className="flex gap-1 mb-2">
-                    {Array.from({ length: Math.floor(rating) }).map((_, idx) => (
-                      <span
-                        key={idx}
-                        className={`w-2 h-2 m-2 rounded-full ${
-                          rating === 5 ? "bg-yellow-400" : "bg-white"
-                        }`}
-                      />
-                    ))}
-                    {rating % 1 >= 0.5 && (
-                      <span
-                        className={`w-2 h-2 m-2 rounded-full opacity-50 ${
-                          rating === 5 ? "bg-yellow-400" : "bg-white"
-                        }`}
-                      />
-                    )}
-                  </div>
+    {/* Rating Overlay */}
+    {rating && (
+      <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+        <div className="flex gap-[0.3em] mb-[0.3em] scale-[0.8] sm:scale-100">
+          {Array.from({ length: Math.floor(rating) }).map((_, idx) => (
+            <span
+              key={idx}
+              className={`w-2 h-2 rounded-full ${
+                rating === 5 ? "bg-yellow-400" : "bg-white"
+              }`}
+            />
+          ))}
+          {rating % 1 >= 0.5 && (
+            <span
+              className={`w-2 h-2 rounded-full opacity-50 ${
+                rating === 5 ? "bg-yellow-400" : "bg-white"
+              }`}
+            />
+          )}
+        </div>
 
-                  <span
-                    className={`text-2xl italic ${
-                      rating === 5 ? "text-yellow-400" : "text-white"
-                    }`}
-                  >
-                    {rating.toFixed(1)}
-                  </span>
-                </div>
-              )}
+        <span
+          className={`text-base sm:text-lg md:text-xl italic font-bold ${
+            rating === 5 ? "text-yellow-400" : "text-white"
+          }`}
+        >
+          {rating.toFixed(1)}
+        </span>
+      </div>
+    )}
+  </div>
 
-              <p className="mt-2 text-center text-md font-semibold text-blue-600">
-                {album.title}
-              </p>
-              <p className="text-center text-sm font-semibold text-blue-600">
-                {album.artist}
-              </p>
-            </a>
+  {/* Title */}
+  <p className="mt-2 text-center text-md font-semibold text-blue-600">
+    {stripParentheses(album.title)}
+  </p>
+
+  {/* Artist */}
+  <p className="text-center text-sm font-semibold">{album.artist}</p>
+</a>
+
           );
         })}
       </div>

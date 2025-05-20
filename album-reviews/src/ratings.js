@@ -88,7 +88,7 @@ const ratings = {
     "MTV Unplugged In New York": 4.1,
     "Music Has The Right To Children": 3.6,
     "Nashville Skyline": 4.3,
-    "OK Computer OKNOTOK 1997 2017": 4.7,
+    "OK Computer": 4.7,
     "On Avery Island": 3.7,
     "On the Beach": 4.8,
     "Panic Blooms": 2.5,
