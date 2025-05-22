@@ -89,7 +89,7 @@ const AlbumGrid = () => {
       </div>
 
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-16 m-20">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8 m-10">
         {combinedItems.map((item, index) => {
           if (item.type === "decorative") {
             return (
